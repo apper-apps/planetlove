@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1,
+    "name": "John Smith",
+    "age": 29,
+    "location": "Boston, MA",
+    "photo": "https://ui-avatars.com/api/?name=John+Smith&background=2196F3&color=fff&size=400",
+    "bio": "Software developer with a passion for psychology and human connection. I enjoy reading, hiking, and having deep conversations about life and relationships.",
+    "mbtiType": "INFJ",
+    "loveLanguages": ["Quality Time", "Words of Affirmation", "Acts of Service"],
+    "questionResponses": [
+      {
+        "questionId": 1,
+        "response": "A day filled with meaningful conversations and deep connections",
+        "category": "Personal Values"
+      },
+      {
+        "questionId": 2,
+        "response": "My family and close relationships",
+        "category": "Gratitude"
+      },
+      {
+        "questionId": 3,
+        "response": "More open communication about emotions",
+        "category": "Family"
+      }
+    ],
+    "interests": ["Psychology", "Reading", "Hiking", "Technology"],
+    "createdAt": "2024-01-10T08:00:00Z",
+    "isActive": true
+  }
+]

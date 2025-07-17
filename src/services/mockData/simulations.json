@@ -1,0 +1,76 @@
+[
+  {
+    "Id": 1,
+    "participants": ["user1", "user2"],
+    "questionSequence": [1, 2, 3, 4, 5],
+    "responses": [
+      {
+        "questionId": 1,
+        "response": "A day filled with meaningful conversations and deep connections",
+        "timestamp": "2024-01-15T10:30:00Z"
+      },
+      {
+        "questionId": 2,
+        "response": "My family and close relationships",
+        "timestamp": "2024-01-15T10:35:00Z"
+      }
+    ],
+    "completionRate": 40,
+    "insights": {
+      "compatibilityLevel": "High",
+      "sharedValues": ["Family", "Connection", "Authenticity"],
+      "recommendations": [
+        "Continue exploring shared interests in psychology",
+        "Plan activities that involve deep conversations",
+        "Consider discussing future goals and aspirations"
+      ]
+    },
+    "startedAt": "2024-01-15T10:25:00Z",
+    "status": "active"
+  },
+  {
+    "Id": 2,
+    "participants": ["user1", "user3"],
+    "questionSequence": [1, 2, 3, 4, 5],
+    "responses": [
+      {
+        "questionId": 1,
+        "response": "An adventure exploring new places and experiences",
+        "timestamp": "2024-01-14T15:45:00Z"
+      },
+      {
+        "questionId": 2,
+        "response": "My health and well-being",
+        "timestamp": "2024-01-14T15:50:00Z"
+      },
+      {
+        "questionId": 3,
+        "response": "More encouragement to take risks",
+        "timestamp": "2024-01-14T15:55:00Z"
+      },
+      {
+        "questionId": 4,
+        "response": "A spontaneous adventure",
+        "timestamp": "2024-01-14T16:00:00Z"
+      },
+      {
+        "questionId": 5,
+        "response": "Shared experiences and adventures",
+        "timestamp": "2024-01-14T16:05:00Z"
+      }
+    ],
+    "completionRate": 100,
+    "insights": {
+      "compatibilityLevel": "Medium",
+      "sharedValues": ["Adventure", "Growth", "Health"],
+      "recommendations": [
+        "Plan outdoor activities together",
+        "Explore new experiences as a couple",
+        "Support each other's personal growth journeys"
+      ]
+    },
+    "startedAt": "2024-01-14T15:40:00Z",
+    "completedAt": "2024-01-14T16:10:00Z",
+    "status": "completed"
+  }
+]
