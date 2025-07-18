@@ -76,10 +76,13 @@ const SimulationChat = ({
     }
   ];
   
-  useEffect(() => {
+useEffect(() => {
     if (simulation && simulation.responses) {
-      setResponses(simulation.responses);
-      setCurrentQuestion(simulation.responses.length);
+      const parsedResponses = typeof simulation.responses === 'string' 
+        ? JSON.parse(simulation.responses) 
+        : simulation.responses;
+      setResponses(parsedResponses);
+      setCurrentQuestion(parsedResponses.length);
     }
   }, [simulation]);
   

@@ -1,72 +1,197 @@
-import profilesData from "@/services/mockData/profiles.json";
-
 class ProfileService {
   constructor() {
-    this.profiles = [...profilesData];
+    // Initialize ApperClient with Project ID and Public Key
+    const { ApperClient } = window.ApperSDK;
+    this.apperClient = new ApperClient({
+      apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+      apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+    });
+    this.tableName = 'profile';
   }
   
   async getAll() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([...this.profiles]);
-      }, 300);
-    });
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "age" } },
+          { field: { Name: "location" } },
+          { field: { Name: "photo" } },
+          { field: { Name: "bio" } },
+          { field: { Name: "mbti_type" } },
+          { field: { Name: "love_languages" } },
+          { field: { Name: "compatibility_score" } },
+          { field: { Name: "interests" } },
+          { field: { Name: "is_online" } }
+        ]
+      };
+      
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      return response.data || [];
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching profiles:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      throw error;
+    }
   }
   
   async getById(id) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const profile = this.profiles.find(p => p.Id === id);
-        if (profile) {
-          resolve({ ...profile });
-        } else {
-          reject(new Error("Profile not found"));
-        }
-      }, 200);
-    });
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "age" } },
+          { field: { Name: "location" } },
+          { field: { Name: "photo" } },
+          { field: { Name: "bio" } },
+          { field: { Name: "mbti_type" } },
+          { field: { Name: "love_languages" } },
+          { field: { Name: "compatibility_score" } },
+          { field: { Name: "interests" } },
+          { field: { Name: "is_online" } }
+        ]
+      };
+      
+      const response = await this.apperClient.getRecordById(this.tableName, id, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      return response.data;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error(`Error fetching profile with ID ${id}:`, error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      throw error;
+    }
   }
   
   async create(profile) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const newProfile = {
-          ...profile,
-          Id: Math.max(...this.profiles.map(p => p.Id)) + 1,
-          compatibilityScore: Math.floor(Math.random() * 30) + 70,
-          isOnline: true
-        };
-        this.profiles.push(newProfile);
-        resolve({ ...newProfile });
-      }, 400);
-    });
+    try {
+      const params = {
+        records: [{
+          Name: profile.Name,
+          age: profile.age,
+          location: profile.location,
+          photo: profile.photo,
+          bio: profile.bio,
+          mbti_type: profile.mbti_type,
+          love_languages: profile.love_languages,
+          compatibility_score: profile.compatibility_score,
+          interests: profile.interests,
+          is_online: profile.is_online
+        }]
+      };
+      
+      const response = await this.apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create profile ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          throw new Error('Failed to create profile');
+        }
+        
+        return successfulRecords[0]?.data;
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error creating profile:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      throw error;
+    }
   }
   
   async update(id, data) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = this.profiles.findIndex(p => p.Id === id);
-        if (index !== -1) {
-          this.profiles[index] = { ...this.profiles[index], ...data };
-          resolve({ ...this.profiles[index] });
-        } else {
-          reject(new Error("Profile not found"));
+    try {
+      const params = {
+        records: [{
+          Id: id,
+          ...(data.Name && { Name: data.Name }),
+          ...(data.age && { age: data.age }),
+          ...(data.location && { location: data.location }),
+          ...(data.photo && { photo: data.photo }),
+          ...(data.bio && { bio: data.bio }),
+          ...(data.mbti_type && { mbti_type: data.mbti_type }),
+          ...(data.love_languages && { love_languages: data.love_languages }),
+          ...(data.compatibility_score && { compatibility_score: data.compatibility_score }),
+          ...(data.interests && { interests: data.interests }),
+          ...(data.is_online !== undefined && { is_online: data.is_online })
+        }]
+      };
+      
+      const response = await this.apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update profile ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          throw new Error('Failed to update profile');
         }
-      }, 300);
-    });
+        
+        return successfulUpdates[0]?.data;
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating profile:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      throw error;
+    }
   }
   
   async delete(id) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = this.profiles.findIndex(p => p.Id === id);
-        if (index !== -1) {
-          this.profiles.splice(index, 1);
-          resolve(true);
-        } else {
-          reject(new Error("Profile not found"));
-        }
-      }, 200);
-    });
+    try {
+      const params = {
+        RecordIds: [id]
+      };
+      
+      const response = await this.apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+      
+      return true;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error deleting profile:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      throw error;
+    }
   }
 }
 
